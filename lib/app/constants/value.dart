@@ -10,5 +10,5 @@ class BaseUrl {
 }
 
 class GeminiApiKey {
-  static const String key = 'AIzaSyAFpUfPUym3RKnGjMjJfnoIsML0rPvutP4';
+  static const String key = '';
 }
