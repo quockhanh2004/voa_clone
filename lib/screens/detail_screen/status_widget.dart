@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,12 +19,12 @@ class DetailSuccessView extends StatefulWidget {
   final ScrollController scrollController;
 
   const DetailSuccessView({
-    Key? key,
+    super.key,
     required this.audio,
     required this.state,
     required this.appState,
     required this.scrollController,
-  }) : super(key: key);
+  });
 
   @override
   State<DetailSuccessView> createState() => _DetailSuccessViewState();
@@ -38,9 +39,11 @@ class _DetailSuccessViewState extends State<DetailSuccessView> {
   Widget build(BuildContext context) {
     return BlocBuilder<MediaCubit, MediaState>(
       builder: (context, mediaState) {
-        print('🎵 Current lyrics status: ${mediaState.lyricsLoadStatus}');
-        print('🎵 Number of lyrics: ${mediaState.lyrics.length}');
-        print('🎵 Current position: ${mediaState.position}');
+        if (kDebugMode) {
+          print('🎵 Current lyrics status: ${mediaState.lyricsLoadStatus}');
+          print('🎵 Number of lyrics: ${mediaState.lyrics.length}');
+          print('🎵 Current position: ${mediaState.position}');
+        }
 
         String highlightedHtml = widget.state.htmlContent ?? '';
 
@@ -81,7 +84,9 @@ class _DetailSuccessViewState extends State<DetailSuccessView> {
               }
             }
           } catch (e) {
-            print('❌ Error highlighting lyrics: $e');
+            if (kDebugMode) {
+              print('❌ Error highlighting lyrics: $e');
+            }
           }
         }
 
@@ -131,63 +136,6 @@ class _DetailSuccessViewState extends State<DetailSuccessView> {
         );
       },
     );
-  }
-
-  void _scrollToCurrentLyric(Lyric currentLyric) {
-    if (!widget.scrollController.hasClients) {
-      print('❌ ScrollController has no clients');
-      return;
-    }
-
-    try {
-      // Tìm tất cả các phần tử mark trong HTML
-      final elements = context.findRenderObject() as RenderBox?;
-      if (elements == null) {
-        print('❌ RenderBox not found');
-        return;
-      }
-
-      // Tìm vị trí của text được highlight
-      final pattern = RegExp(RegExp.escape(currentLyric.text));
-      final match = pattern.firstMatch(widget.state.htmlContent ?? '');
-
-      if (match != null) {
-        // Tính toán vị trí scroll dựa trên viewport
-        final viewportHeight = MediaQuery.of(context).size.height;
-        final contentHeight = elements.size.height;
-
-        // Ước tính vị trí tương đối của text trong nội dung
-        final startIndex = match.start;
-        final totalLength = widget.state.htmlContent?.length ?? 1;
-        final relativePosition = startIndex / totalLength;
-
-        // Tính toán vị trí scroll thực tế
-        final estimatedPosition = contentHeight * relativePosition;
-
-        // Điều chỉnh vị trí để text nằm ở 1/3 màn hình
-        final targetPosition = estimatedPosition - (viewportHeight / 3);
-
-        // Đảm bảo vị trí scroll nằm trong giới hạn cho phép
-        final finalPosition = targetPosition.clamp(
-          0.0,
-          widget.scrollController.position.maxScrollExtent,
-        );
-
-        print(
-          '📜 Scroll to position: $finalPosition (estimated: $estimatedPosition)',
-        );
-
-        widget.scrollController.animateTo(
-          finalPosition,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      } else {
-        print('❌ No match found for text: ${currentLyric.text}');
-      }
-    } catch (e) {
-      print('❌ Scroll error: $e');
-    }
   }
 }
 

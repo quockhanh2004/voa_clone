@@ -4,7 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
-import 'package:voa_clone/model/media.dart' hide Type, typeValues;
+import 'package:voa_clone/model/media.dart' hide typeValues;
 import 'package:voa_clone/model/response_audio.dart';
 import 'package:voa_clone/model/response_video.dart';
 
@@ -78,26 +78,6 @@ class AppDatabase extends _$AppDatabase {
 
   // Phương thức để lưu Audio
   Future<void> insertAudio(Audio audio) async {
-    final companion = AudiosTableCompanion(
-      objectId: Value(audio.objectId),
-      title: Value(audio.title),
-      subtitle: Value(audio.subtitle ?? ''),
-      cover: Value(audio.cover),
-      duration: Value(audio.duration),
-      audioHq: Value(audio.audioHq ?? ''),
-      cfUrl: Value(audio.cfUrl),
-      hero: Value(audio.hero),
-      articleId: Value(audio.articleId),
-      audio: Value(audio.audio),
-      originalPubtime: Value(audio.originalPubtime.iso),
-      audioCaptionOk: Value(audio.audioCaptionOk),
-      createdAt: Value(audio.createdAt),
-      updatedAt: Value(audio.updatedAt),
-      branchLink: Value(audio.branchLink),
-      likeCount: Value(audio.likeCount),
-      viewCount: Value(audio.viewCount),
-      aclJson: Value(jsonEncode(audio.acl.toJson())),
-    );
     // await into(audiosTable).insert(companion, mode: InsertMode.replace);
   }
 

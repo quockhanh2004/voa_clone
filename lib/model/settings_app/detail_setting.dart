@@ -34,4 +34,5 @@ class DetailSetting extends Equatable {
   List<Object> get props => [bgColor, textSize];
 }
 
+// ignore: constant_identifier_names
 enum BackgroundColorDetail { BLACK, WHITE, SEPIA }

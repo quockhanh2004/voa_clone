@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voa_clone/app/bloc/audios/audios_state.dart';
 import 'package:voa_clone/app/database/database.dart';
@@ -41,7 +42,9 @@ class AudiosCubit extends Cubit<AudiosState> {
         ));
       }
     } catch (e) {
-      print('Error loading cached audios: $e');
+      if (kDebugMode) {
+        print('Error loading cached audios: $e');
+      }
     }
   }
 }

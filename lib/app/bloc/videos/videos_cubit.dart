@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voa_clone/app/bloc/videos/videos_state.dart';
 import 'package:voa_clone/app/database/database.dart';
@@ -37,7 +38,9 @@ class VideosCubit extends Cubit<VideosState> {
         );
       }
     } catch (e) {
-      print('Error loading cached videos: $e');
+      if (kDebugMode) {
+        print('Error loading cached videos: $e');
+      }
     }
   }
 }

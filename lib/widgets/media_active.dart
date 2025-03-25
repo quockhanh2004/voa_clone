@@ -1,5 +1,6 @@
 // widgets/media_active.dart
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -19,9 +20,11 @@ class MediaActive extends StatelessWidget {
     return BlocBuilder<MediaCubit, MediaState>(
       builder: (context, state) {
         if (!state.isActive || state.media == null) {
-          print(
+          if (kDebugMode) {
+            print(
             'MediaActive hidden: isActive=${state.isActive}, media=${state.media != null}',
           );
+          }
           return const SizedBox.shrink();
         }
 

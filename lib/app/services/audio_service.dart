@@ -1,6 +1,6 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:voa_clone/app/constants/value.dart';
 import 'package:voa_clone/model/response_audio.dart';
 
@@ -29,7 +29,9 @@ class AudioService {
       }
       throw Exception('Failed to load audios');
     } catch (e) {
-      print('Error get audios: ${e.toString()}');
+      if (kDebugMode) {
+        print('Error get audios: ${e.toString()}');
+      }
       throw Exception('Error loading audios: $e');
     }
   }

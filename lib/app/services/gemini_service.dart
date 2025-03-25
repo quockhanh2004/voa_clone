@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 // ignore: depend_on_referenced_packages
 import 'package:mime/mime.dart';
@@ -36,7 +37,9 @@ class GeminiService {
 
     // Kiểm tra cache trong bộ nhớ trước
     if (_memoryCacheMap.containsKey(cacheKey)) {
-      print('✅ Lyrics found in memory cache');
+      if (kDebugMode) {
+        print('✅ Lyrics found in memory cache');
+      }
       return _memoryCacheMap[cacheKey];
     }
 
@@ -46,7 +49,9 @@ class GeminiService {
       final String? cachedLyricsJson = prefs.getString(cacheKey);
 
       if (cachedLyricsJson != null) {
-        print('✅ Lyrics found in disk cache');
+        if (kDebugMode) {
+          print('✅ Lyrics found in disk cache');
+        }
         // Chuyển đổi JSON thành danh sách Lyric
         final List<dynamic> lyricsData = jsonDecode(cachedLyricsJson);
         final lyrics =
@@ -63,7 +68,9 @@ class GeminiService {
         return lyrics;
       }
     } catch (e) {
-      print('❌ Error reading from disk cache: $e');
+      if (kDebugMode) {
+        print('❌ Error reading from disk cache: $e');
+      }
     }
 
     return null;
@@ -104,9 +111,13 @@ class GeminiService {
         await prefs.setStringList(_lyricsStorageKey, cachedKeys);
       }
 
-      print('✅ Lyrics saved to disk cache');
+      if (kDebugMode) {
+        print('✅ Lyrics saved to disk cache');
+      }
     } catch (e) {
-      print('❌ Error writing to disk cache: $e');
+      if (kDebugMode) {
+        print('❌ Error writing to disk cache: $e');
+      }
     }
   }
 
@@ -129,10 +140,14 @@ class GeminiService {
         }
 
         await prefs.setStringList(_lyricsStorageKey, keysToKeep);
-        print('🧹 Cleaned up ${keysToRemove.length} old cache entries');
+        if (kDebugMode) {
+          print('🧹 Cleaned up ${keysToRemove.length} old cache entries');
+        }
       }
     } catch (e) {
-      print('❌ Error cleaning cache: $e');
+      if (kDebugMode) {
+        print('❌ Error cleaning cache: $e');
+      }
     }
   }
 
@@ -160,7 +175,9 @@ class GeminiService {
       }
       return location;
     } catch (e) {
-      print("❌ Lỗi lấy upload URL: $e");
+      if (kDebugMode) {
+        print("❌ Lỗi lấy upload URL: $e");
+      }
       return null;
     }
   }
@@ -187,7 +204,9 @@ class GeminiService {
 
       return response.data['name']; // Return the file ID/name
     } catch (e) {
-      print("❌ Lỗi tải file lên: $e");
+      if (kDebugMode) {
+        print("❌ Lỗi tải file lên: $e");
+      }
       return null;
     }
   }
@@ -303,7 +322,9 @@ class GeminiService {
 
       return response.data['candidates']?[0]['content']['parts']?[0]['text'];
     } catch (e) {
-      print("❌ Lỗi tạo nội dung: $e");
+      if (kDebugMode) {
+        print("❌ Lỗi tạo nội dung: $e");
+      }
       return null;
     }
   }
@@ -410,7 +431,9 @@ class GeminiService {
       );
 
       if (response.statusCode != 200) {
-        print("API Response: ${response.data}");
+        if (kDebugMode) {
+          print("API Response: ${response.data}");
+        }
         throw Exception(
           'Generate content failed with status ${response.statusCode}',
         );
@@ -434,7 +457,9 @@ class GeminiService {
 
       return lyrics;
     } catch (e) {
-      print('Error generating lyrics: $e');
+      if (kDebugMode) {
+        print('Error generating lyrics: $e');
+      }
       return [];
     } finally {
       // Xóa file tạm nếu tồn tại
@@ -446,7 +471,9 @@ class GeminiService {
           await file.delete();
         }
       } catch (e) {
-        print('Error cleaning up temp file: $e');
+        if (kDebugMode) {
+          print('Error cleaning up temp file: $e');
+        }
       }
     }
   }
@@ -477,7 +504,9 @@ class GeminiService {
 
       return file;
     } catch (e) {
-      print('Error downloading audio: $e');
+      if (kDebugMode) {
+        print('Error downloading audio: $e');
+      }
       return null;
     }
   }

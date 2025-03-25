@@ -1,13 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:voa_clone/app/constants/value.dart';
 import 'package:voa_clone/model/response_audio.dart';
 
 class FavoriteService {
-  final Dio _dio = Dio(BaseOptions(baseUrl: BaseUrl.baseUrl, headers: HeaderDefault.headers));
+  final Dio _dio = Dio(
+    BaseOptions(baseUrl: BaseUrl.baseUrl, headers: HeaderDefault.headers),
+  );
 
   Future<Map<String, dynamic>> favoriteArticle(Audio audio) async {
     try {
-      print('Calling favorite API for articleId: ${audio.articleId}');
+      if (kDebugMode) {
+        print('Calling favorite API for articleId: ${audio.articleId}');
+      }
 
       final body = {
         "installation": {
@@ -21,12 +26,16 @@ class FavoriteService {
         },
         "object_id": "article:${audio.articleId}",
       };
-      print('Body: $body');
+      if (kDebugMode) {
+        print('Body: $body');
+      }
 
       final response = await _dio.post('voale/classes/Activity', data: body);
 
-      print('Response status code: ${response.statusCode}');
-      print('Response data: ${response.data}');
+      if (kDebugMode) {
+        print('Response status code: ${response.statusCode}');
+        print('Response data: ${response.data}');
+      }
 
       if (response.statusCode == 201) {
         return response.data;
@@ -34,26 +43,34 @@ class FavoriteService {
         throw Exception('Failed to favorite article');
       }
     } catch (e) {
-      print('Error in favoriteArticle: $e');
+      if (kDebugMode) {
+        print('Error in favoriteArticle: $e');
+      }
       throw Exception('Error: $e');
     }
   }
 
   Future<Map<String, dynamic>?> checkFavorite(Audio audio) async {
     try {
-      print('Checking favorite for articleId: ${audio.articleId}');
+      if (kDebugMode) {
+        print('Checking favorite for articleId: ${audio.articleId}');
+      }
 
       final body = {
         "where":
             "{\"action\":\"like\",\"object_id\":\"article:${audio.articleId}\",\"installation\":{\"__type\":\"Pointer\",\"className\":\"_Installation\",\"objectId\":\"${audio.objectId}\"}}",
         "_method": "GET",
       };
-      print('Body: $body');
+      if (kDebugMode) {
+        print('Body: $body');
+      }
 
       final response = await _dio.post('voale/classes/Activity', data: body);
 
-      print('Response status code: ${response.statusCode}');
-      print('Response data: ${response.data}');
+      if (kDebugMode) {
+        print('Response status code: ${response.statusCode}');
+        print('Response data: ${response.data}');
+      }
 
       if (response.statusCode == 200 &&
           response.data['results'] != null &&
@@ -62,24 +79,32 @@ class FavoriteService {
       }
       return null;
     } catch (e) {
-      print('Error in checkFavorite: $e');
+      if (kDebugMode) {
+        print('Error in checkFavorite: $e');
+      }
       throw Exception('Error: $e');
     }
   }
 
   Future<void> unfavoriteArticle(String objectId) async {
     try {
-      print('Unfavorite article with objectId: $objectId');
+      if (kDebugMode) {
+        print('Unfavorite article with objectId: $objectId');
+      }
 
       final response = await _dio.delete('voale/classes/Activity/$objectId');
 
-      print('Response status code: ${response.statusCode}');
+      if (kDebugMode) {
+        print('Response status code: ${response.statusCode}');
+      }
 
       if (response.statusCode != 200) {
         throw Exception('Failed to unfavorite article');
       }
     } catch (e) {
-      print('Error in unfavoriteArticle: $e');
+      if (kDebugMode) {
+        print('Error in unfavoriteArticle: $e');
+      }
       throw Exception('Error: $e');
     }
   }

@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player/video_player.dart';
 import 'package:voa_clone/app/bloc/media/media_state.dart';
@@ -69,7 +70,9 @@ class MediaCubit extends Cubit<MediaState> {
           });
       }
     } catch (e) {
-      print('Error loading media: $e');
+      if (kDebugMode) {
+        print('Error loading media: $e');
+      }
     }
   }
 

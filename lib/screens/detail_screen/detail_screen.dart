@@ -2,22 +2,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voa_clone/app/bloc/app_cubit.dart';
-import 'package:voa_clone/app/bloc/app_state.dart';
 import 'package:voa_clone/app/bloc/detail/detail_cubit.dart';
 import 'package:voa_clone/app/bloc/detail/detail_state.dart';
-import 'package:voa_clone/app/bloc/favorite/favorite_cubit.dart';
 import 'package:voa_clone/app/enums/load_status.dart';
-import 'package:voa_clone/model/favorite.dart';
 import 'package:voa_clone/model/response_audio.dart';
 import 'package:voa_clone/app/services/detail_service.dart';
-import 'package:voa_clone/screens/detail_screen/app_bar.dart';
 import 'package:voa_clone/screens/detail_screen/status_widget.dart';
 import 'package:voa_clone/app/bloc/media/media_cubit.dart';
 
 class DetailScreen extends StatefulWidget {
   final Audio audio;
 
-  const DetailScreen({Key? key, required this.audio}) : super(key: key);
+  const DetailScreen({super.key, required this.audio});
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
